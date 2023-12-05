@@ -37,8 +37,16 @@ const startServer = async () => {
             .createServer(async (req, res) => {        // создаем сервер, req-запрос от клиента, res-ответ сервера
                   
                   try{
-                        res.setHeader("Access-Control-Allow-Origin", "*");                                  //  укащзываем загловк чтобы отпарвлять POST/PATCH запросы, 2-ым параметром указываем адрес того сайта кому разрешено отсылать запросы на сервер, *- значит разрешаем всем
-                  
+                        res.setHeader("Access-Control-Allow-Origin", "*");   // какиее сайты могут отсылать запросы серверу
+                        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS");  // какик запросы ожидает сервер                               //  укащзываем загловк чтобы отпарвлять POST/PATCH запросы, 2-ым параметром указываем адрес того сайта кому разрешено отсылать запросы на сервер, *- значит разрешаем всем
+                        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+                        if(req.method === 'OPTIONS'){
+                              res.writeHead(204);
+                              res.end();
+                              return;
+                        }
+
                         //const reqURL = new URL(req.url, `http://${req.headers.host}`);                 // создаем урл, получаем  /comedians
                                                          
                         const segments = req.url.split("/").filter(Boolean);                  // разделяет строку req.url  и получаем  массив  строк ['', 'comedians', '11'], после filter(Boolean) станет ['comedians', '11']
