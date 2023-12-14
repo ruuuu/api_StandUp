@@ -6,7 +6,6 @@ import fs from "node:fs/promises";
 
  
 // PATCH  /clients/:ticket   Редаткрование клиента по номеру билета
-
 export const handleUpdateClient = async(req, res, ticketNumber) => {
 
             let body = "";                                                    // тело запроса, котрый отправляет клиент
@@ -53,9 +52,12 @@ export const handleUpdateClient = async(req, res, ticketNumber) => {
       
                   if(clientIndex === -1){ // если такого элемнта нет
                         sendError(res, 400, 'клиент с данными не существует');
+                        return;  // выход из метода
                   }
 
                   clients.splice(clientIndex, 1, updateClient);                 // удалили элеент с индексом clientIndex  из массива и вставили элемент updateClient
+                  // либо вместо splice сделать  так:
+                  // clients[clientIndex] = {...clients[clientIndex], ...updateClient };
 
                   await fs.writeFile(CLIENTS, JSON.stringify(clients));                   // в файле будет [ {"fullName":"Ru Ivanova", "phone":"89765456", "ticketNumber":"895"} ]
       
